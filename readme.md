@@ -30,4 +30,4 @@ Solution structure:
 	
 ## Releases
 
-Download release packages [here](https://perisms.codeplex.com/releases/)
+Download release packages [here](https://perilistextender.codeplex.com/releases)
