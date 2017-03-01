@@ -8,6 +8,8 @@ List<Object>.ExportToCsv("[FULL_PATH]"); // Save to file
 List<Object>.ExportToPdf("[FULL_PATH]", [PdfFormat]); // Save to file
 ```
 
+View sample output [here](sample.pdf)
+
 ## People to blame
 
 The following personnel are responsible for managing this project.
