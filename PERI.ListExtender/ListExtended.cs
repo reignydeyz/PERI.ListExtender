@@ -62,7 +62,10 @@ namespace PERI.ListExtender
             {
                 foreach (var field in rec.GetType().GetProperties())
                 {
-                    fileContent.Append(field.GetValue(rec, null) + ",");
+                    if (!IsAllowedPropertyInfo(field))
+                        continue;
+
+                    fileContent.Append((field.GetValue(rec, null) ?? "") + ",");
                 }
 
                 fileContent.Append("\r\n");
@@ -128,7 +131,7 @@ namespace PERI.ListExtender
                 int colindex = 0;
                 foreach (var field in rec.GetType().GetProperties())
                 {
-                    table.AddCell(new Phrase(field.GetValue(rec, null).ToString(), font5));
+                    table.AddCell(new Phrase((field.GetValue(rec, null) ?? "").ToString(), font5));
                     colindex++;
                 }
             }
@@ -205,6 +208,9 @@ namespace PERI.ListExtender
             // Adding columns
             foreach (var prop in typeof(T).GetProperties())
             {
+                if (!IsAllowedPropertyInfo(prop))
+                    continue;
+
                 table.AddCell(new Phrase(prop.Name, fontbold));
             }
 
@@ -214,7 +220,10 @@ namespace PERI.ListExtender
                 int colindex = 0;
                 foreach (var field in rec.GetType().GetProperties())
                 {
-                    table.AddCell(new Phrase(field.GetValue(rec, null).ToString(), font5));
+                    if (!IsAllowedPropertyInfo(field))
+                        continue;
+
+                    table.AddCell(new Phrase((field.GetValue(rec, null) ?? "").ToString(), font5));
                     colindex++;
                 }
             }
