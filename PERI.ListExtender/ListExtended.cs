@@ -30,6 +30,8 @@ namespace PERI.ListExtender
                     || prop.PropertyType == typeof(long?)
                     || prop.PropertyType == typeof(decimal)
                     || prop.PropertyType == typeof(decimal?)
+                    || prop.PropertyType == typeof(double)
+                    || prop.PropertyType == typeof(double?)
                     || prop.PropertyType == (typeof(bool))
                     || prop.PropertyType == (typeof(bool?))
                     || prop.PropertyType == (typeof(DateTime))
@@ -108,11 +110,15 @@ namespace PERI.ListExtender
             iTextSharp.text.Font fontbold = iTextSharp.text.FontFactory.GetFont(FontFactory.HELVETICA_BOLD, layout.FontSize);
             iTextSharp.text.Font font5 = iTextSharp.text.FontFactory.GetFont(FontFactory.HELVETICA, layout.FontSize);
 
-            PdfPTable table = new PdfPTable(typeof(T).GetProperties().Count());
+            // Get valid properties
+            var props = typeof(T).GetProperties().ToList();
+            props.RemoveAll(x => !IsAllowedPropertyInfo(x));
+
+            PdfPTable table = new PdfPTable(props.Count());
 
             // Setting columns
             List<float> l = new List<float>();
-            foreach (var prop in typeof(T).GetProperties())
+            foreach (var prop in props)
                 l.Add(4f);
 
             float[] a = l.ToArray();
@@ -120,7 +126,7 @@ namespace PERI.ListExtender
             table.WidthPercentage = 100;
 
             // Adding columns
-            foreach (var prop in typeof(T).GetProperties())
+            foreach (var prop in props)
             {
                 table.AddCell(new Phrase(prop.Name, fontbold));
             }
@@ -129,7 +135,7 @@ namespace PERI.ListExtender
             foreach (var rec in list)
             {
                 int colindex = 0;
-                foreach (var field in rec.GetType().GetProperties())
+                foreach (var field in props)
                 {
                     table.AddCell(new Phrase((field.GetValue(rec, null) ?? "").ToString(), font5));
                     colindex++;
@@ -194,11 +200,15 @@ namespace PERI.ListExtender
             iTextSharp.text.Font fontbold = iTextSharp.text.FontFactory.GetFont(FontFactory.HELVETICA_BOLD, layout.FontSize);
             iTextSharp.text.Font font5 = iTextSharp.text.FontFactory.GetFont(FontFactory.HELVETICA, layout.FontSize);
 
-            PdfPTable table = new PdfPTable(typeof(T).GetProperties().Count());
+            // Get valid properties
+            var props = typeof(T).GetProperties().ToList();
+            props.RemoveAll(x => !IsAllowedPropertyInfo(x));
+
+            PdfPTable table = new PdfPTable(props.Count());
 
             // Setting columns
             List<float> l = new List<float>();
-            foreach (var prop in typeof(T).GetProperties())
+            foreach (var prop in props)
                 l.Add(4f);
 
             float[] a = l.ToArray();
@@ -206,11 +216,8 @@ namespace PERI.ListExtender
             table.WidthPercentage = 100;
 
             // Adding columns
-            foreach (var prop in typeof(T).GetProperties())
+            foreach (var prop in props)
             {
-                if (!IsAllowedPropertyInfo(prop))
-                    continue;
-
                 table.AddCell(new Phrase(prop.Name, fontbold));
             }
 
@@ -218,11 +225,8 @@ namespace PERI.ListExtender
             foreach (var rec in list)
             {
                 int colindex = 0;
-                foreach (var field in rec.GetType().GetProperties())
+                foreach (var field in props)
                 {
-                    if (!IsAllowedPropertyInfo(field))
-                        continue;
-
                     table.AddCell(new Phrase((field.GetValue(rec, null) ?? "").ToString(), font5));
                     colindex++;
                 }

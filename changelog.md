@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.3.0] - 2017-05-08
+### [Added]
+-  Allow double
+### [Fixed]
+- Malformed PDF
+
 ## [1.0.2.1] - 2017-05-04
 ### [Fixed]
 - Corrected the CSV parsing;
